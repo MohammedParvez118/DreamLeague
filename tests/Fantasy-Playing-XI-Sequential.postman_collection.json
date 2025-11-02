@@ -1,0 +1,499 @@
+{
+  "info": {
+    "name": "Fantasy App - Playing XI Sequential System (Updated)",
+    "description": "Complete test collection for sequential Playing XI system. RECENT UPDATES: League ID fix, DELETE removed, deadline timer fix, sequential blocking UI. Last updated: Oct 2025",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "fantasy-playing-xi-sequential-v2"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "team_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "league_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "match_842",
+      "value": "842",
+      "type": "string"
+    },
+    {
+      "key": "match_844",
+      "value": "844",
+      "type": "string"
+    },
+    {
+      "key": "match_846",
+      "value": "846",
+      "type": "string"
+    },
+    {
+      "key": "match_848",
+      "value": "848",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Setup & Verification",
+      "item": [
+        {
+          "name": "Check League Transfer Limit",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/leagues/{{league_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "leagues", "{{league_id}}"]
+            },
+            "description": "Verify league has transfer_limit set (should be 10 by default)"
+          },
+          "response": []
+        },
+        {
+          "name": "Check Team Free Changes Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/teams/{{team_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "teams", "{{team_id}}"]
+            },
+            "description": "Verify team has captain_free_change_used and vice_captain_free_change_used fields (should be false initially)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Transfer Stats (Initial)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/transfer-stats/{{team_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transfer-stats", "{{team_id}}"]
+            },
+            "description": "Get initial transfer stats - should show 0 used, 10 remaining, both free changes available"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Match 842 - First Match (No Baseline)",
+      "item": [
+        {
+          "name": "Get Playing XI for Match 842 (Empty)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi/{{team_id}}/{{match_842}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi", "{{team_id}}", "{{match_842}}"]
+            },
+            "description": "Should return empty lineup, no previous match, canEdit: true"
+          },
+          "response": []
+        },
+        {
+          "name": "Save Playing XI for Match 842 (First Match)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": {{team_id}},\n  \"matchId\": {{match_842}},\n  \"leagueId\": {{league_id}},\n  \"squad\": [\n    {\"playerId\": \"1463374\", \"playerName\": \"Virat Kohli\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"253802\", \"playerName\": \"Rohit Sharma\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"422108\", \"playerName\": \"KL Rahul\", \"playerRole\": \"Wicketkeeper\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625371\", \"playerName\": \"Hardik Pandya\", \"playerRole\": \"All-rounder\", \"squadName\": \"IND\"},\n    {\"playerId\": \"554691\", \"playerName\": \"Ravindra Jadeja\", \"playerRole\": \"All-rounder\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625383\", \"playerName\": \"Jasprit Bumrah\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"481979\", \"playerName\": \"Mohammad Shami\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"793463\", \"playerName\": \"Kuldeep Yadav\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"1070420\", \"playerName\": \"Shubman Gill\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"560565\", \"playerName\": \"Ravichandran Ashwin\", \"playerRole\": \"All-rounder\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625386\", \"playerName\": \"Mohammed Siraj\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"}\n  ],\n  \"captain\": \"1463374\",\n  \"viceCaptain\": \"253802\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi"]
+            },
+            "description": "Save first Playing XI. Should succeed with 0 transfers used."
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Match 842 Saved",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi/{{team_id}}/{{match_842}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi", "{{team_id}}", "{{match_842}}"]
+            },
+            "description": "Verify lineup is saved correctly with captain and VC"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. Match 844 - Auto-prefill & Player Transfer",
+      "item": [
+        {
+          "name": "Get Playing XI for Match 844 (Auto-prefilled)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi/{{team_id}}/{{match_844}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi", "{{team_id}}", "{{match_844}}"]
+            },
+            "description": "Should return auto-prefilled lineup from Match 842. Check autoPrefilled flag."
+          },
+          "response": []
+        },
+        {
+          "name": "Save Match 844 - 2 Player Transfers",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": {{team_id}},\n  \"matchId\": {{match_844}},\n  \"leagueId\": {{league_id}},\n  \"squad\": [\n    {\"playerId\": \"1463374\", \"playerName\": \"Virat Kohli\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"253802\", \"playerName\": \"Rohit Sharma\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"422108\", \"playerName\": \"KL Rahul\", \"playerRole\": \"Wicketkeeper\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625371\", \"playerName\": \"Hardik Pandya\", \"playerRole\": \"All-rounder\", \"squadName\": \"IND\"},\n    {\"playerId\": \"554691\", \"playerName\": \"Ravindra Jadeja\", \"playerRole\": \"All-rounder\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625383\", \"playerName\": \"Jasprit Bumrah\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"481979\", \"playerName\": \"Mohammad Shami\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"398381\", \"playerName\": \"Yuzvendra Chahal\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"1070420\", \"playerName\": \"Shubman Gill\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"675259\", \"playerName\": \"Ishan Kishan\", \"playerRole\": \"Wicketkeeper\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625386\", \"playerName\": \"Mohammed Siraj\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"}\n  ],\n  \"captain\": \"1463374\",\n  \"viceCaptain\": \"253802\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi"]
+            },
+            "description": "Changed: 793463→398381, 560565→675259. Should show 2 transfers used, 8 remaining."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Transfer Stats After Match 844",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/transfer-stats/{{team_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transfer-stats", "{{team_id}}"]
+            },
+            "description": "Should show: transfersUsed: 2, transfersRemaining: 8"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "4. Match 846 - Free Captain Change",
+      "item": [
+        {
+          "name": "Get Playing XI for Match 846 (Auto-prefilled from 844)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi/{{team_id}}/{{match_846}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi", "{{team_id}}", "{{match_846}}"]
+            },
+            "description": "Should auto-prefill from Match 844, NOT Match 842"
+          },
+          "response": []
+        },
+        {
+          "name": "Save Match 846 - Use Free Captain Change",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": {{team_id}},\n  \"matchId\": {{match_846}},\n  \"leagueId\": {{league_id}},\n  \"squad\": [\n    {\"playerId\": \"1463374\", \"playerName\": \"Virat Kohli\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"253802\", \"playerName\": \"Rohit Sharma\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"422108\", \"playerName\": \"KL Rahul\", \"playerRole\": \"Wicketkeeper\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625371\", \"playerName\": \"Hardik Pandya\", \"playerRole\": \"All-rounder\", \"squadName\": \"IND\"},\n    {\"playerId\": \"554691\", \"playerName\": \"Ravindra Jadeja\", \"playerRole\": \"All-rounder\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625383\", \"playerName\": \"Jasprit Bumrah\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"481979\", \"playerName\": \"Mohammad Shami\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"398381\", \"playerName\": \"Yuzvendra Chahal\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"1070420\", \"playerName\": \"Shubman Gill\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"675259\", \"playerName\": \"Ishan Kishan\", \"playerRole\": \"Wicketkeeper\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625386\", \"playerName\": \"Mohammed Siraj\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"}\n  ],\n  \"captain\": \"253802\",\n  \"viceCaptain\": \"1463374\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi"]
+            },
+            "description": "Changed captain from 1463374→253802. Should use FREE captain change (0 transfers). Total: 2 transfers, 8 remaining."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Transfer Stats After Free Captain Change",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/transfer-stats/{{team_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transfer-stats", "{{team_id}}"]
+            },
+            "description": "Should show: transfersUsed: 2, captainFreeChangeUsed: true, captainChangesRemaining: 0"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "5. Match 848 - Captain Change Costs Transfer",
+      "item": [
+        {
+          "name": "Get Playing XI for Match 848 (Auto-prefilled from 846)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi/{{team_id}}/{{match_848}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi", "{{team_id}}", "{{match_848}}"]
+            },
+            "description": "Should auto-prefill from Match 846"
+          },
+          "response": []
+        },
+        {
+          "name": "Save Match 848 - Captain Change Costs 1 Transfer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": {{team_id}},\n  \"matchId\": {{match_848}},\n  \"leagueId\": {{league_id}},\n  \"squad\": [\n    {\"playerId\": \"1463374\", \"playerName\": \"Virat Kohli\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"253802\", \"playerName\": \"Rohit Sharma\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"422108\", \"playerName\": \"KL Rahul\", \"playerRole\": \"Wicketkeeper\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625371\", \"playerName\": \"Hardik Pandya\", \"playerRole\": \"All-rounder\", \"squadName\": \"IND\"},\n    {\"playerId\": \"554691\", \"playerName\": \"Ravindra Jadeja\", \"playerRole\": \"All-rounder\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625383\", \"playerName\": \"Jasprit Bumrah\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"481979\", \"playerName\": \"Mohammad Shami\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"398381\", \"playerName\": \"Yuzvendra Chahal\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"1070420\", \"playerName\": \"Shubman Gill\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"675259\", \"playerName\": \"Ishan Kishan\", \"playerRole\": \"Wicketkeeper\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625386\", \"playerName\": \"Mohammed Siraj\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"}\n  ],\n  \"captain\": \"625371\",\n  \"viceCaptain\": \"1463374\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi"]
+            },
+            "description": "Changed captain from 253802→625371 (free change already used). Should cost 1 transfer. Total: 3 transfers, 7 remaining."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Transfer Stats After Paid Captain Change",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/transfer-stats/{{team_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "transfer-stats", "{{team_id}}"]
+            },
+            "description": "Should show: transfersUsed: 3, transfersRemaining: 7"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "6. Edge Cases & Validation",
+      "item": [
+        {
+          "name": "Try to Save Match 846 Before Match 844 (Should Fail)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": {{team_id}},\n  \"matchId\": {{match_846}},\n  \"leagueId\": {{league_id}},\n  \"squad\": [...],\n  \"captain\": \"1463374\",\n  \"viceCaptain\": \"253802\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi"]
+            },
+            "description": "Should return error: 'Please save Playing XI for Match 844 first' (if 844 not saved)"
+          },
+          "response": []
+        },
+        {
+          "name": "Try to Edit Locked Match (Should Fail)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": {{team_id}},\n  \"matchId\": {{match_842}},\n  \"leagueId\": {{league_id}},\n  \"squad\": [...],\n  \"captain\": \"1463374\",\n  \"viceCaptain\": \"253802\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi"]
+            },
+            "description": "If Match 842 deadline has passed, should return error: 'Cannot save - deadline has passed'"
+          },
+          "response": []
+        },
+        {
+          "name": "Try to Exceed Transfer Limit (Should Fail)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": {{team_id}},\n  \"matchId\": {{match_848}},\n  \"leagueId\": {{league_id}},\n  \"squad\": [\n    {\"playerId\": \"999991\"},\n    {\"playerId\": \"999992\"},\n    {\"playerId\": \"999993\"},\n    {\"playerId\": \"999994\"},\n    {\"playerId\": \"999995\"},\n    {\"playerId\": \"999996\"},\n    {\"playerId\": \"999997\"},\n    {\"playerId\": \"999998\"},\n    {\"playerId\": \"999999\"},\n    {\"playerId\": \"999990\"},\n    {\"playerId\": \"999989\"}\n  ],\n  \"captain\": \"999991\",\n  \"viceCaptain\": \"999992\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi"]
+            },
+            "description": "Changing all 11 players should exceed limit. Should return error with remaining transfers."
+          },
+          "response": []
+        },
+        {
+          "name": "Save Without Captain (Should Fail)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": {{team_id}},\n  \"matchId\": {{match_848}},\n  \"leagueId\": {{league_id}},\n  \"squad\": [...],\n  \"viceCaptain\": \"253802\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi"]
+            },
+            "description": "Should return error: 'Captain and Vice-Captain required'"
+          },
+          "response": []
+        },
+        {
+          "name": "Save With Same Captain and VC (Should Fail)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": {{team_id}},\n  \"matchId\": {{match_848}},\n  \"leagueId\": {{league_id}},\n  \"squad\": [...],\n  \"captain\": \"1463374\",\n  \"viceCaptain\": \"1463374\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi"]
+            },
+            "description": "Should return error: 'Captain and Vice-Captain must be different'"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "7. Delete & Cleanup",
+      "item": [
+        {
+          "name": "Delete Playing XI for Unlocked Match",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi/{{team_id}}/{{match_848}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi", "{{team_id}}", "{{match_848}}"]
+            },
+            "description": "Should succeed if match hasn't started"
+          },
+          "response": []
+        },
+        {
+          "name": "Try to Delete Locked Match (Should Fail)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi/{{team_id}}/{{match_842}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi", "{{team_id}}", "{{match_842}}"]
+            },
+            "description": "Should return error: 'Cannot delete - match has already started'"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "8. Re-adding Player Test",
+      "item": [
+        {
+          "name": "Match 850 - Re-add Player from Match 842",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"teamId\": {{team_id}},\n  \"matchId\": 850,\n  \"leagueId\": {{league_id}},\n  \"squad\": [\n    {\"playerId\": \"1463374\", \"playerName\": \"Virat Kohli\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"253802\", \"playerName\": \"Rohit Sharma\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"422108\", \"playerName\": \"KL Rahul\", \"playerRole\": \"Wicketkeeper\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625371\", \"playerName\": \"Hardik Pandya\", \"playerRole\": \"All-rounder\", \"squadName\": \"IND\"},\n    {\"playerId\": \"554691\", \"playerName\": \"Ravindra Jadeja\", \"playerRole\": \"All-rounder\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625383\", \"playerName\": \"Jasprit Bumrah\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"481979\", \"playerName\": \"Mohammad Shami\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"793463\", \"playerName\": \"Kuldeep Yadav\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"},\n    {\"playerId\": \"1070420\", \"playerName\": \"Shubman Gill\", \"playerRole\": \"Batsman\", \"squadName\": \"IND\"},\n    {\"playerId\": \"675259\", \"playerName\": \"Ishan Kishan\", \"playerRole\": \"Wicketkeeper\", \"squadName\": \"IND\"},\n    {\"playerId\": \"625386\", \"playerName\": \"Mohammed Siraj\", \"playerRole\": \"Bowler\", \"squadName\": \"IND\"}\n  ],\n  \"captain\": \"625371\",\n  \"viceCaptain\": \"1463374\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/playing-xi",
+              "host": ["{{base_url}}"],
+              "path": ["api", "playing-xi"]
+            },
+            "description": "Re-adding 793463 (Kuldeep) who was in Match 842 but not 848. Should still cost 1 transfer because baseline is Match 848, not 842."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

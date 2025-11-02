@@ -1,0 +1,145 @@
+import { useState, useEffect } from 'react';
+import { leagueAPI } from '../services/api';
+import './LeagueInfo.css';
+
+function LeagueInfo({ leagueId }) {
+  const [leagueInfo, setLeagueInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchLeagueInfo();
+  }, [leagueId]);
+
+  const fetchLeagueInfo = async () => {
+    try {
+      setLoading(true);
+      const response = await leagueAPI.getLeagueInfo(leagueId);
+      if (response.data.success) {
+        setLeagueInfo(response.data.data);
+      }
+    } catch (err) {
+      console.error('Error fetching league info:', err);
+      setError('Failed to load league information');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Not Available';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'Not Available';
+    return date.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric' 
+    });
+  };
+
+  const getStatusBadge = (status) => {
+    const statusMap = {
+      'upcoming': { label: 'Upcoming', className: 'badge-upcoming' },
+      'ongoing': { label: 'Ongoing', className: 'badge-ongoing' },
+      'completed': { label: 'Completed', className: 'badge-completed' }
+    };
+    
+    const statusInfo = statusMap[status] || { label: status, className: 'badge-default' };
+    
+    return (
+      <span className={`status-badge ${statusInfo.className}`}>
+        {statusInfo.label}
+      </span>
+    );
+  };
+
+  if (loading) {
+    return (
+      <div className="league-info-container">
+        <div className="loading-state">
+          <div className="spinner"></div>
+          <p>Loading league information...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="league-info-container">
+        <div className="error-state">
+          <span className="error-icon">⚠️</span>
+          <p>{error}</p>
+          <button onClick={fetchLeagueInfo} className="btn-retry">
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!leagueInfo) {
+    return null;
+  }
+
+  return (
+    <div className="league-info-container">
+      <div className="info-header">
+        <h3>📊 League Information & Details</h3>
+        {getStatusBadge(leagueInfo.league_status)}
+      </div>
+
+      <div className="info-grid">
+        <div className="info-card">
+          <div className="info-icon">🔄</div>
+          <div className="info-content">
+            <h4>Transfer Limit</h4>
+            <p className="info-value">
+              {leagueInfo.transfer_limit !== null && leagueInfo.transfer_limit !== undefined 
+                ? leagueInfo.transfer_limit 
+                : 'Unlimited'}
+            </p>
+            <p className="info-help">per team</p>
+          </div>
+        </div>
+
+        <div className="info-card">
+          <div className="info-icon">🔒</div>
+          <div className="info-content">
+            <h4>Privacy</h4>
+            <p className="info-value">
+              {leagueInfo.privacy === 'private' ? '🔒 Private' : '🌐 Public'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {leagueInfo.description && (
+        <div className="league-description">
+          <h4>📝 Description</h4>
+          <p>{leagueInfo.description}</p>
+        </div>
+      )}
+
+      <div className="league-stats-summary">
+        <h4>📈 Match Statistics</h4>
+        <div className="stats-row">
+          <div className="stat-item">
+            <span className="stat-label">Completed Matches:</span>
+            <span className="stat-value">{leagueInfo.completed_matches || 0}</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Upcoming Matches:</span>
+            <span className="stat-value">{leagueInfo.upcoming_matches || 0}</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Created On:</span>
+            <span className="stat-value">{formatDate(leagueInfo.created_at)}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default LeagueInfo;

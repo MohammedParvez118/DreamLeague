@@ -1,0 +1,164 @@
+.tournament-squads-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.page-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.filter-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.filter-section label {
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.squad-filter {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 15px;
+  min-width: 250px;
+}
+
+.squads-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 25px;
+}
+
+.squad-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.squad-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.squad-title {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  margin: 0;
+  font-size: 20px;
+  text-align: center;
+}
+
+.players-count {
+  background: #f8f9fa;
+  padding: 10px 20px;
+  text-align: center;
+  font-weight: 600;
+  color: #666;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.players-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.players-table thead {
+  background-color: #007bff;
+  color: white;
+}
+
+.players-table th {
+  padding: 12px 20px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.players-table td {
+  padding: 10px 20px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.players-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.players-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.player-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.player-role {
+  color: #666;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.no-players {
+  padding: 40px 20px;
+  text-align: center;
+  color: #999;
+  font-style: italic;
+}
+
+.no-data {
+  background: white;
+  padding: 60px 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.no-data p {
+  margin: 10px 0;
+  color: #666;
+  font-size: 16px;
+}
+
+.no-data p:first-child {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .squads-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .filter-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .squad-filter {
+    width: 100%;
+  }
+}

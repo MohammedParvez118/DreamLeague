@@ -1,0 +1,770 @@
+.playing-xi-container {
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.xi-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f0f0f0;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.xi-header h3 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.header-info {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.deadline-timer {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.transfer-stats-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.transfer-item {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  min-width: 140px;
+}
+
+.transfer-item:nth-child(2) {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  box-shadow: 0 2px 8px rgba(245, 87, 108, 0.3);
+}
+
+.transfer-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+  font-weight: 600;
+}
+
+.transfer-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.transfer-value.depleted {
+  color: #ffe066;
+  animation: shake 0.5s;
+  text-shadow: 0 0 10px rgba(255, 224, 102, 0.5);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.match-selector {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.match-selector label {
+  font-weight: 600;
+  color: #666;
+  white-space: nowrap;
+}
+
+.match-selector select {
+  flex: 1;
+  padding: 10px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.match-selector select:focus {
+  outline: none;
+  border-color: #4caf50;
+}
+
+.btn-copy-xi {
+  padding: 10px 16px;
+  white-space: nowrap;
+}
+
+.selection-summary {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  color: #fff;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.summary-item .label {
+  font-size: 12px;
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.summary-item .value {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.summary-item .value.text-error {
+  color: #ffe0e0;
+  animation: errorPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes errorPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Cricket Ground Visualization */
+.cricket-ground {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background: linear-gradient(180deg, #2d5016 0%, #3d6e1f 100%);
+  border-radius: 12px;
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+
+.pitch {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 80px;
+  background: #d4b896;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.pitch-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  height: 2px;
+  background: #fff;
+}
+
+.field-positions {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.player-position {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.player-position:hover {
+  transform: scale(1.1);
+  z-index: 10;
+}
+
+/* Field positions (11 players arranged on cricket field) */
+.player-position.pos-1 { top: 10%; left: 50%; transform: translateX(-50%); }
+.player-position.pos-2 { top: 20%; left: 20%; }
+.player-position.pos-3 { top: 20%; right: 20%; }
+.player-position.pos-4 { top: 35%; left: 10%; }
+.player-position.pos-5 { top: 35%; right: 10%; }
+.player-position.pos-6 { top: 50%; left: 15%; }
+.player-position.pos-7 { top: 50%; right: 15%; }
+.player-position.pos-8 { top: 65%; left: 20%; }
+.player-position.pos-9 { top: 65%; right: 20%; }
+.player-position.pos-10 { bottom: 15%; left: 35%; }
+.player-position.pos-11 { bottom: 15%; right: 35%; }
+
+.player-avatar {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #fff;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin-bottom: 8px;
+}
+
+.player-position.is-captain .player-avatar {
+  border-color: #ffd700;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.6);
+}
+
+.player-position.is-vice-captain .player-avatar {
+  border-color: #c0c0c0;
+  box-shadow: 0 4px 12px rgba(192, 192, 192, 0.6);
+}
+
+.player-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.badge-c,
+.badge-vc {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.badge-c {
+  background: #ffd700;
+  color: #000;
+}
+
+.badge-vc {
+  background: #c0c0c0;
+  color: #000;
+}
+
+.player-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-role {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Squad Selection */
+.squad-selection {
+  margin-top: 32px;
+}
+
+.squad-selection h4 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+/* Smart Selection Banner */
+.smart-selection-banner {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.banner-icon {
+  font-size: 2rem;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.banner-content {
+  flex: 1;
+}
+
+.banner-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.banner-suggestion {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.95;
+}
+
+.banner-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.banner-stats span {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.banner-stats .stat-ok {
+  background: rgba(76, 175, 80, 0.3);
+}
+
+.banner-stats .stat-error {
+  background: rgba(244, 67, 54, 0.3);
+  animation: pulse-error 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-error {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.selection-help {
+  margin-bottom: 24px;
+  color: #666;
+  font-size: 14px;
+}
+
+.role-group {
+  margin-bottom: 32px;
+}
+
+.role-group h5 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.player-card {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.player-card:hover:not(.disabled) {
+  border-color: #4caf50;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+  transform: translateY(-2px);
+}
+
+.player-card.selected {
+  border-color: #4caf50;
+  background: #f1f8f4;
+}
+
+.player-card.captain {
+  border-color: #ffd700;
+  background: #fffbea;
+}
+
+.player-card.vice-captain {
+  border-color: #c0c0c0;
+  background: #f5f5f5;
+}
+
+.player-card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f5f5f5;
+  position: relative;
+}
+
+.player-card.disabled::after {
+  content: '🔒';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 1.2rem;
+  opacity: 0.7;
+}
+
+.disabled-reason {
+  display: block;
+  font-size: 0.75rem;
+  color: #f44336;
+  background: #ffebee;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.25rem;
+  font-weight: 600;
+  animation: pulse-warning 2s ease-in-out infinite;
+}
+
+@keyframes pulse-warning {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.player-select-area {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  gap: 12px;
+  position: relative;
+}
+
+.player-select-area img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+}
+
+.player-info {
+  flex: 1;
+}
+
+.player-info h6 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.team-badge {
+  font-size: 11px;
+  color: #666;
+  background: #f0f0f0;
+  padding: 2px 8px;
+  border-radius: 12px;
+}
+
+.selected-badge {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #4caf50;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.captain-controls {
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f9f9f9;
+  border-top: 1px solid #e0e0e0;
+}
+
+.btn-captain,
+.btn-vice-captain {
+  flex: 1;
+  padding: 6px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-captain:hover,
+.btn-vice-captain:hover {
+  background: #f5f5f5;
+}
+
+.btn-captain.active {
+  background: #ffd700;
+  border-color: #ffd700;
+  color: #000;
+}
+
+.btn-vice-captain.active {
+  background: #c0c0c0;
+  border-color: #c0c0c0;
+  color: #000;
+}
+
+.xi-actions {
+  margin-top: 32px;
+  text-align: center;
+  padding-top: 24px;
+  border-top: 2px solid #f0f0f0;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-save-xi {
+  padding: 14px 48px;
+  font-size: 16px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.btn-save-xi:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(76, 175, 80, 0.4);
+}
+
+.btn-save-xi:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-delete-xi {
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+}
+
+.btn-delete-xi:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
+  background: linear-gradient(135deg, #d32f2f 0%, #c62828 100%);
+}
+
+.btn-delete-xi:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.alert-error {
+  background: #fee;
+  color: #c00;
+  border: 1px solid #fcc;
+}
+
+.alert-success {
+  background: #efe;
+  color: #0a0;
+  border: 1px solid #cfc;
+}
+
+.alert-warning {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.alert-info {
+  background: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4caf50;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.empty-state .empty-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  color: #333;
+  margin-bottom: 12px;
+  font-size: 24px;
+}
+
+.empty-state p {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 24px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.help-steps {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  margin: 24px auto;
+  max-width: 500px;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.help-steps ol {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.help-steps li {
+  margin: 12px 0;
+  line-height: 1.6;
+  color: #444;
+}
+
+.help-steps strong {
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.spinner-small {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .cricket-ground {
+    height: 400px;
+  }
+
+  .player-avatar {
+    width: 50px;
+    height: 50px;
+  }
+
+  .players-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .selection-summary {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .match-selector {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
