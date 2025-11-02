@@ -11,7 +11,8 @@ const LeagueInfo = ({ leagueId }) => {
     const fetchLeagueInfo = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:3000/api/league/${leagueId}/info`);
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+  const response = await axios.get(`${API_BASE}/api/league/${leagueId}/info`);
         console.log('League info fetched:', response.data);
         setLeagueInfo(response.data.data); // Extract data from the API response wrapper
         setError(null);

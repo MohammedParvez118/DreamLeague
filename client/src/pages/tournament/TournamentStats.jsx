@@ -25,7 +25,8 @@ const TournamentStats = () => {
             setLoading(true);
             setError(null);
 
-            const response = await axios.get(`http://localhost:3000/api/tournaments/${tournamentId}/stats`);
+            const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+            const response = await axios.get(`${API_BASE}/api/tournaments/${tournamentId}/stats`);
             
             if (response.data.success) {
                 setStats(response.data.data);

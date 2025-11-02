@@ -28,7 +28,8 @@ const MatchScorecard = () => {
             setError(null);
 
             // Fetch from database only (no RapidAPI call)
-            const url = `http://localhost:3000/api/matches/${matchId}/scorecard`;
+            const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+            const url = `${API_BASE}/api/matches/${matchId}/scorecard`;
             const response = await axios.get(url);
             
             if (response.data.success && response.data.data.scorecards && response.data.data.scorecards.length > 0) {
@@ -62,7 +63,8 @@ const MatchScorecard = () => {
             setIsRefreshing(true);
             setError(null);
 
-            const url = `http://localhost:3000/api/matches/${matchId}/scorecard?rapidApiMatchId=${rapidApiMatchId}`;
+            const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+            const url = `${API_BASE}/api/matches/${matchId}/scorecard?rapidApiMatchId=${rapidApiMatchId}`;
             const response = await axios.get(url);
             
             if (response.data.success) {

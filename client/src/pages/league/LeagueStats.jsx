@@ -27,7 +27,8 @@ const LeagueStats = () => {
             setError(null);
 
             // Fetch league details to get tournament_id
-            const leagueResponse = await axios.get(`http://localhost:3000/api/league/${id}`);
+            const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+            const leagueResponse = await axios.get(`${API_BASE}/api/league/${id}`);
             
             if (!leagueResponse.data || !leagueResponse.data.league) {
                 setError('League not found');
@@ -44,7 +45,7 @@ const LeagueStats = () => {
             }
 
             // Fetch tournament stats
-            const statsResponse = await axios.get(`http://localhost:3000/api/tournaments/${leagueData.tournament_id}/stats`);
+            const statsResponse = await axios.get(`${API_BASE}/api/tournaments/${leagueData.tournament_id}/stats`);
             
             if (statsResponse.data.success) {
                 setStats(statsResponse.data.data);

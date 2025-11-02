@@ -15,8 +15,9 @@ const PlayerMatchStatsModal = ({ playerId, playerName, tournamentId, onClose }) 
     try {
       setLoading(true);
       setError(null);
+      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
       const response = await axios.get(
-        `http://localhost:3000/api/tournaments/${tournamentId}/player/${playerId}/matches`
+        `${API_BASE}/api/tournaments/${tournamentId}/player/${playerId}/matches`
       );
       
       if (response.data.success) {
