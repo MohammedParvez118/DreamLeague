@@ -1,0 +1,46 @@
+.tournament-fixtures {
+  padding: 16px;
+}
+
+.tournament-fixtures h2 {
+  margin-bottom: 12px;
+}
+
+.fixtures-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fixture-row {
+  border-bottom: 1px solid #eee;
+}
+
+.fixture-link {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 8px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.fixture-link:hover {
+  background: #fafafa;
+}
+
+.fixture-desc {
+  font-weight: 500;
+}
+
+.fixture-time {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.no-fixtures {
+  color: #666;
+}
+
+.error {
+  color: red;
+}
