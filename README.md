@@ -1,33 +1,3 @@
-# Fantasy-app (consolidated)
-
-Documentation has been consolidated into a single file to keep the repository tidy.
-
-- Primary docs: `CONSOLIDATED_DOCS.md` (contains all combined `.md` files with source headers).
-- Original markdown files and other archived artifacts were moved to `archive/` and then compressed to `archive.zip`.
-
-If you need to inspect the original files or restore them:
-
-To list archive contents:
-
-```bash
-# from repo root
-unzip -l archive.zip
-```
-
-To extract everything back to `archive/`:
-
-```bash
-unzip archive.zip -d archive
-```
-
-Notes:
-- I did not delete anything permanently; everything was moved to `archive/` and compressed.
-- `node_modules/` was not changed.
-
-If you'd like a different README or a summary of the consolidated docs, tell me and I will update this file.
-
----
-
 Generated on: 2025-11-02
 # 🏏 Fantasy Cricket App
 
